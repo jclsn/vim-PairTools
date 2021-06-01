@@ -15,7 +15,7 @@ let g:pairtools_cpp_jigsaw    = 1
 " Configure PairClamp
 let g:pairtools_cpp_autoclose  = 1
 let g:pairtools_cpp_forcepairs = 0
-let g:pairtools_cpp_closepairs = "(:),[:],{:},':'"
+let g:pairtools_cpp_closepairs = "(:),[:],{:},':',\":\""
 let g:pairtools_cpp_smartclose = 1
 let g:pairtools_cpp_smartcloserules = '\w,(,&,\*'
 let g:pairtools_cpp_apostrophe = 0
