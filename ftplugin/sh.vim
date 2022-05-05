@@ -1,13 +1,12 @@
 " sh.sh - PairTools Configuration
-" Maintainer: Martin Lafreniere <pairtools@gmail.com>
-" Last Change: 2011 May 18
+" Maintainer: Jan Claussen <jan.clausse10@web.de
+" Last Change: Do 5. Mai 10:43:37 CEST 2022
 "
-" This is my own configuration file for the VIM Language.
+" This is my own configuration file for bash
 " It is free to use, modify and distribute. It is provided "AS IS" with no
 " warranty.
 
-" Enable/Disable modules to use. For the VIM language, I like to
-" use all modules but restricting few capabilities
+" Enable/Disable modules to use.
 let g:pairtools_sh_pairclamp = 1
 let g:pairtools_sh_tagwrench = 1
 let g:pairtools_sh_jigsaw    = 1

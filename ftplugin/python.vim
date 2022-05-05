@@ -1,13 +1,11 @@
-" vim.vim - PairTools Configuration
-" Maintainer: Martin Lafreniere <pairtools@gmail.com>
-" Last Change: 2011 May 18
+" Maintainer: Jan Claussen <jan.clausse10@web.de>
+" Last Change: Do 5. Mai 10:43:49 CEST 2022
 "
-" This is my own configuration file for C++.
-" It is free to use, modify and distribute. It is provided "AS IS" with no 
+" This is my own configuration file for Python.
+" It is free to use, modify and distribute. It is provided "AS IS" with no
 " warranty.
 
-" Enable/Disable modules to use. For C++, I don't need the Tag Wrench
-" module at all.
+" Enable/Disable modules to use.
 let g:pairtools_python_pairclamp = 1
 let g:pairtools_python_tagwrench = 0
 let g:pairtools_python_jigsaw    = 1

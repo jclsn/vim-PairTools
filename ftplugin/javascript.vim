@@ -1,3 +1,12 @@
+" pkgbuild.pkgbuild - PairTools Configuration
+" Maintainer: Jan Claussen <jan.claussen10@web.de>
+" Last Change: Do 5. Mai 10:41:27 CEST 2022
+"
+" This is my own configuration file for the Javascript.
+" It is free to use, modify and distribute. It is provided "AS IS" with no
+" warranty.
+
+" Enable/Disable modules to use.
 let g:pairtools_javascript_pairclamp = 1
 let g:pairtools_javascript_tagwrench = 0
 let g:pairtools_javascript_jigsaw    = 1

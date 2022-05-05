@@ -2,11 +2,11 @@
 " Maintainer: Martin Lafreniere <pairtools@gmail.com>
 " Last Change: 2011 May 18
 "
-" This is my own configuration file for C++.
-" It is free to use, modify and distribute. It is provided "AS IS" with no 
+" This is my own configuration file for C.
+" It is free to use, modify and distribute. It is provided "AS IS" with no
 " warranty.
 
-" Enable/Disable modules to use. For C++, I don't need the Tag Wrench
+" Enable/Disable modules to use. For C, I don't need the Tag Wrench
 " module at all.
 let g:pairtools_c_pairclamp = 1
 let g:pairtools_c_tagwrench = 0
