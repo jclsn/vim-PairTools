@@ -3,7 +3,7 @@
 " Last Change: 2011 May 18
 "
 " This is my own configuration file for C++.
-" It is free to use, modify and distribute. It is provided "AS IS" with no 
+" It is free to use, modify and distribute. It is provided "AS IS" with no
 " warranty.
 
 " Enable/Disable modules to use. For C++, I don't need the Tag Wrench
@@ -15,7 +15,7 @@ let g:pairtools_cpp_jigsaw    = 1
 " Configure PairClamp
 let g:pairtools_cpp_autoclose  = 1
 let g:pairtools_cpp_forcepairs = 0
-let g:pairtools_cpp_closepairs = "(:),[:],{:},':',\":\""
+let g:pairtools_cpp_closepairs = "(:),[:],{:},\":\",\/* : *\/"
 let g:pairtools_cpp_smartclose = 1
 let g:pairtools_cpp_smartcloserules = '\w,(,&,\*'
 let g:pairtools_cpp_apostrophe = 0
