@@ -26,45 +26,45 @@ Help on PairTools                                     *pairtools-help*
 9.  Credits							|pairtools-credits|
 10. Changes							|pairtools-changes|
 
- 
+
 ==============================================================================
 1. Introduction											*pairtools-intro*
 
 The PairTools plugin can be seen as a "bundle" of tools to handle various
 "pair" operations. It also offers a flexible way to set pairs and options per
-filetypes. Therefore, it is possible to have pairs and options set for editing 
+filetypes. Therefore, it is possible to have pairs and options set for editing
 C++ files while also editing XML files with other pairs and options inside the
 same window.
 
-The plugin is modular, i.e. related features are grouped inside a module, and 
-other related features inside others groups. In the current version, there are 
+The plugin is modular, i.e. related features are grouped inside a module, and
+other related features inside others groups. In the current version, there are
 three modules: pairclamp.vim, tagwrench.vim and jigsaw.vim.
 
 The PairClamp module works with single characters pairs such as (,). The
 TagWrench module works with angle brackets <,> and tags <tagname>. The Jigsaw
 module coordinates some key maps between PairClamp and TagWrench, such as when
-pressing backspace and calling the right hook function. The pairtools.vim file 
+pressing backspace and calling the right hook function. The pairtools.vim file
 defines autocmds, mappings and options to make all the modules work.
 
 Filetypes
 
 The plugin work with {filetype}.vim files inside the user ftplugin/ directory
 to setup itself inside the current buffers. For example, the user needs to
-specify all the options he wants to enable for HTML editing; he must do so 
+specify all the options he wants to enable for HTML editing; he must do so
 inside his ftplugin/html.vim. If that user also edits PHP file then he must
 also specify a ftplugin/php.vim file with his options set for PHP.
 
 There is a command tool to generate a {filetype}.vim file into ~\.vim or
 ~/vimfiles. Type :PairToolsSampleFile <filetype> to generate a sample file.
 Example: >
-	
+
 	PairToolsSampleFile python
 <
 This will generate a python.vim file with all options in ~/.vim or ~\vimfiles
 and all the user has to do is to copy the file inside the appropriate ftplugin
 directory and modify the options value. For more flexibility, the user can set
-the g:pairtools_samplefile_path variable from his .vimrc to specify the 
-destination path for the generated files. 
+the g:pairtools_samplefile_path variable from his .vimrc to specify the
+destination path for the generated files.
 
 Report
 
@@ -72,32 +72,33 @@ The plugin feature a simple "report" command. Type :PairToolsReport and it
 will show all options value.
 
 
-Note: Version 1.0 included a surround feature now removed. The user is 
+Note: Version 1.0 included a surround feature now removed. The user is
       encouraged to use the surround plugin for vim instead.
 
 ==============================================================================
+
 2. PairClamp											*pairtools-pairclamp*
 
-The PairClamp module handle all operations involving single character pairs.
-This include auto-closing a pair, stepping out from a pair, forcing a pair,
+The PairClamp module handles all operations involving single character pairs.
+This includes auto-closing a pair, stepping out from a pair, forcing a pair,
 defining when a pair should not auto-close, erasing them with one key and
 expanding then with carriage return.
 
 To enable PairClamp, the user must provide inside his ftplugin/{filetype}.vim
 the following: >
-	
+
 	let g:pairtools_{filetype}_pairclamp = 1
 <
 
 2.1 Auto-Close											*pairclamp-autoclose*
 
 In order to use that feature, the user must enable it and specify which pairs
-he wants to work with. To do so he must set these options into his filetype
+he wants to work with. To do so, he must set these options into his filetype
 file. For example, to set these options for Python the user needs to add this
 into his ftplugin/python.vim: >
 
 	let g:pairtools_python_autoclose  = 1
-    let g:pairtools_python_closepairs = '(:),[:],":"'
+	let g:pairtools_python_closepairs = '(:),[:],":"'
 
 This will enable the auto-closing feature and set the pairs (),{},[],''. Now
 the user only need to have a file with filetype set to python and when he will
@@ -109,23 +110,24 @@ example. Basically the steps go like this (the | denotes the cursor):
 	Plugin adds closing:	(|)
 
 Thus, the pair is automatically closed, AND the cursor is kept right after the
-opening character. Now let's write something inside these parens:
+opening character. Now let's write something inside these parentheses:
 
 	Type Hello World:		(Hello World|)
-    Press ) next to the ):  (Hello World)|
+	Press ) next to the ):  (Hello World)|
 
 Now when the user press the closing character when next to (and left of) the
 closing character, it will automatically push the cursor on the right of it.
+
 
 2.2 Force Pairs											*pairclamp-forcepairs*
 
 Sometimes, it is useful to be able to force a pair to automatically close. For
 example, the antimagic feature will prevent auto-closing inside some syntax
 area. If the users really needs to add a pair and start editing in-between
-them, this will allow the user to do so. This is really useful to add Python
-DOCSTRING and immediatly start writing inside the DOCSTRING.
+them, this will allow the user to do so. This is really useful to add a Python
+DOCSTRING and immediately start writing inside the DOCSTRING.
 
-For example, to enable the force pairs for python, the user must add this to 
+For example, to enable the force pairs for Python, the user must add this to
 his python.vim file: >
 
 	let g:pairtools_python_forcepairs = 1
@@ -138,12 +140,12 @@ corresponding force pairs map at <M-">.
 There is one notable exception to this and this is the bar |, which cannot be
 mapping to the META key and instead uses <C-L>|.
 
-The following example shows how this can be applied to python DOCSTRING:
+The following example shows how this can be applied to Python DOCSTRING:
 
 	Type opening char ":		"|"
 
 Typing " would only get the user out! Thus using force pairs by pressing <M-">
-will yield to:
+will lead to:
 
 	Type <M-">:                 ""|""
     Type <M-"> again:		    """|"""
@@ -155,9 +157,9 @@ out.
 
 This feature can prevent auto-closing in some situations. These situations are
 specified using a list of regex-like expressions. The user has to enable the
-feature and specify in which condition to prevent auto-closing. For example,
-let's say the user wants to prevents auto-closing when left of a word
-character and opening parens inside his ftplugin/python.vim: >
+feature and specify in which situation to prevent auto-closing. For example,
+let's say the user wants to prevent auto-closing while the cursor located left
+from a word character and opening parenthesis inside his ftplugin/python.vim: >
 
 	let g:pairtools_python_smartclose = 1
 	let g:pairtools_python_smartcloserules = '\w,('
@@ -165,14 +167,14 @@ character and opening parens inside his ftplugin/python.vim: >
 In smartcloserules, the \w represent any word character.
 
 There is also the special character ^ which means all opening character
-defined inside g:pairtools_{filetype}_closepairs. So, if there user has the
+defined inside g:pairtools_{filetype}_closepairs. So, if the user has the
 following closepairs set in his python.vim: >
 
 	let g:pairtools_python_closepairs = '(:),[:],":"'
 	let g:pairtools_python_smartcloserule = '\w,^'
 <
-Then the smartcloserule list can be considered to be '\w,(,[,"'. As rules are
-are using as regex-like expression, it is important to escape the following 
+Then the smartcloserules list can be considered to be '\w,(,[,"'. As rules
+are using as regex-like expression, it is important to escape the following
 characters: \*, \., \$ and \^.
 
 2.4 Antimagic											*pairclamp-antimagic*
@@ -194,7 +196,7 @@ python example, the user can enable it using: >
 
 	let g:pairtools_python_pceraser = 1
 <
-Then when the cursor is immediatly between the opening and closing character,
+Then when the cursor is between the opening and closing character,
 pressing backspace will automatically erase the closing character as well.
 Example:
 
@@ -206,7 +208,7 @@ Example:
 
 The expander work when the carriage return key is hit when in-between
 characters forming a pair. Using the python filetype as earlier, one can
-enable this feature as follow: >
+enable this feature as follows: >
 
 	let g:pairtools_python_pcexpander = 1
 <
@@ -227,20 +229,20 @@ indentation.
 
 This module is dedicated to the angle brackets <,> and tags formed by them.
 Using the angle brackets pair inside PairClamp can lead to very confusing
-situations and lot's of deletes. After all, these are used as lesser-something
-and greater-something operators in many languages. And it's even more worse
-when the user must used them inside html with for example php code embedded.
+situations and lot's of delete actions. After all, these are used as less-than
+and greater-than operators in many languages. And it's even worse when the user
+must use them inside HTML with, e.g., PHP code embedded.
 
-TagWrench resolve this by creating a "tag context" to avoid closing an opening
+TagWrench resolves this by creating a "tag context" to avoid closing an opening
 angle bracket when it is not necessary. Furthermore, the addition of hooks
-allows to automatically add a closing tag when the first tag made with the 
+allows to automatically add a closing tag when the first tag made with the
 angle brackets is a starting tag. More details will follow about this feature
 later.
 
-It is easier to grasp these features using VIM code and HTML code examples.
-For now we will not use any hook, i.e. the options to set the TagWrench hook
-will be set to a void hook. Here is an example of VIM script options the user 
-can set to enable tagwrench with a void hook: >
+It is easier to grasp this feature using VIM code and HTML code examples.
+For now, we will not use any hook, i.e., the options to set the TagWrench hook
+will be set to a void hook. Here is an example of Vimscript options the user
+can set to enable the TagWrench with a void hook: >
 
 	let g:pairtools_vim_tagwrench = 1
 	let g:pairtools_vim_tagwrenchhook = 'tagwrench#BuiltinNoHook'
@@ -249,15 +251,15 @@ The tagwrench#BuiltinNoHook is a hook function defined inside the TagWrench
 module that does nothing. It is useful when the user does not want to use any
 of the provided hooks.
 
-In Vim, when the user wants to map a key to do something special for the 
-current buffer, he must use the "tag" <buffer>. Here is how it is constructed 
+In Vim, when the user wants to map a key to do something special for the
+current buffer, he must use the "tag" <buffer>. Here is how it is constructed
 with the angle brackets:
 
 	Type opening bracket:		<|
     Then type 'b':              <b|>
 
 After the b appeared, the closing brackets is inserted. It will do so when the
-first character is: a-z, A-Z, 0-9, _, ! and /. There are two other characters 
+first character is: a-z, A-Z, 0-9, _, ! and /. There are two other characters
 as well but we will talk about them later.
 
 	Type the remaining letter:  <buffer|>
@@ -266,25 +268,25 @@ as well but we will talk about them later.
 The cursor stepped out like it is doing in PairClamp. It is that simple. But
 much more can be done when using TagWrench to write HTML tags for example.
 There are a few thing to consider while typing and moving the cursor in insert
-mode. This requires an explanation on how it internally works, the big 
+mode. This requires an explanation on how it internally works, the big
 picture.
 
 When the user type < for the first time, it starts a tag context and will
-listen for a tag event. The following character typed will determine if we 
-stay in the tag context or if we leave it. The context will automatically 
-close when pressing > to step out of the "tag". But what happens when ESC, UP, 
-DOWN, LEFT, RIGHT keys are pressed? 
+listen for a tag event. The following character typed will determine if we
+stay in the tag context or if we leave it. The context will automatically
+close when pressing > to step out of the "tag". But what happens when ESC, UP,
+DOWN, LEFT, RIGHT keys are pressed?
 
-ESC, UP an DOWN automatically leave the context leaving the tag as is. This is 
-very important when using a hook along this feature because if the cursor is 
-moved back left of the > in insert move, the context does not exist anymore. 
-It will not step out of the tag and it will not call the hook function for 
+ESC, UP an DOWN automatically leave the context leaving the tag as is. This is
+very important when using a hook along this feature because if the cursor is
+moved back left of the > in insert move, the context does not exist anymore.
+It will not step out of the tag and it will not call the hook function for
 futher processing anymore. And it is also true for LEFT and RIGHT keys,
 but under some condition the context will not be left by pressing them.
 
-The LEFT and RIGHT key are somewhat special. They don't automatically close 
-the context, unless pressing RIGHT moved the cursor pass the > or pressing 
-LEFT moved the cursor pass the <. This is an example of how LEFT, RIGHT works 
+The LEFT and RIGHT key are somewhat special. They don't automatically close
+the context, unless pressing RIGHT moved the cursor pass the > or pressing
+LEFT moved the cursor pass the <. This is an example of how LEFT, RIGHT works
 inside a tag context:
 
 	Starting with:              <buffer|>
@@ -307,25 +309,26 @@ an html document, such as PHP code.
 
 And the context immediatly ends.
 
+
 3.1 Hooks												*tagwrench-hooks*
 
-The power of this module resides in the hook functions. When pressing the 
-closing angle bracket to step out, the specified hook function is called for 
-further processing. As we saw earlier a hook can be set as follow. The example
-show how it can be set for an html filetype: >
+The power of this module resides in the hook functions. When pressing the
+closing angle bracket to step out, the specified hook function is called for
+further processing. As we saw earlier, a hook can be set as follows. The example
+show how it can be set for an HTML file: >
 
 	let g:pairtools_html_tagwrenchhook = 'tagwrench#BuiltinBasicTagHook'
 <
 Currently there are three builtin hooks:
 
-tagwrench#BuiltinNoHook: 
+tagwrench#BuiltinNoHook:
 
 This is the void hook, which does nothing and returns.
 
 tagwrench#BuiltinBasicTagHook:
 
-This is a basic tag builder that automatically add an ending tag when the 
-starting tag does not end with />, i.e. it ends with a single >. Also, tags 
+This is a basic tag builder that automatically adds an ending tag when the
+starting tag does not end with />, i.e. it ends with a single >. Also, tags
 starting with a bang (!) or slash (/) never generate closing tags.
 
 Here is an example using the <html> tag:
@@ -372,12 +375,12 @@ Then, we want to add a span element to Hello:
 	Adding span to Hello:    <h1><span|>Hello World</h1>
 	Pressing >, w, Enter:    <h1><span>|Hello</span> World</h1>
 
-* Note: current this feature only work inside a single line.
+* Note: Currently this feature only work inside a single line.
 
 tagwrench#BuiltinHTML5Hook:
 
-It calls the BuiltinBasicTagHook, passing it a list of tags to do not insert 
-an ending tag. It follows all the rules from the basic tag hook plus it looks 
+It calls the BuiltinBasicTagHook, passing it a list of tags to do not insert
+an ending tag. It follows all the rules from the basic tag hook plus it looks
 to prevent the closing tags for HTML5 void tags.
 
 For example:
@@ -386,7 +389,7 @@ For example:
 	Pressing > produces:       <img src="image.png">|
 
 	We have:                   <div id="main"|>
-    Pressing > produces:	   <div id="main">|</div>
+	Pressing > produces:	   <div id="main">|</div>
 
 TagWrench Hook Public API								*tagwrench-hookapi*
 
@@ -401,7 +404,7 @@ needs an arguments: the full name of the hook function.
 The hook function must take at least two arguments:
 
 	1. Context Begin: this is the position of the opening < on the line.
-    2. Context End: this is the position after the closing > on the line.
+	2. Context End: this is the position after the closing > on the line.
 
 The hook function returns nothing. For examples, the user is refered to the
 TagWrench Hook Public API fold in autoload/tagwrench.vim for few examples.
@@ -430,7 +433,7 @@ example:
 
 3.3 Expander											*tagwrench-expander*
 
-The TagWrench expander expand a starting and ending tag and the special <%,%> 
+The TagWrench expander expand a starting and ending tag and the special <%,%>
 and <?,?> much the same way the PairClamp expander expands brackets. The
 simple <,> is not expanded on carriage return.
 
@@ -454,7 +457,7 @@ For example:
 4. Jigsaw												*pairtools-jigsaw*
 
 The Jigsaw module is the central part to make then erasers and expanders of
-both PairClamp and TagWrench work altogether. Here, we use hook functions to 
+both PairClamp and TagWrench work altogether. Here, we use hook functions to
 tell these when a given key is pressed, such as <BS> and <CR>.
 
 Jigsaw current defines two functions:
@@ -475,11 +478,11 @@ It is possible to add more function using their public hook API:
 	2. jigsaw#AddCarriageReturnHook
 
 These functions need two arguments:
-	
+
 	1. The hook function name
 	2. The hook return value
 
-Right now, the hook functions do not take any argument, but that could change
+As of now, the hook functions do not take any argument, but that could change
 later on.
 
 For the PairClamp and TagWrench modules, for example, the eraser functions are
@@ -491,7 +494,7 @@ hook for jigsaw#Backspace.
 There are a few ways to install the plugin:
 
 1. Using `git clone` manually copy all files
-2. Using `git clone` launch `vim pairtools.vba` followed by `:so %` and 
+2. Using `git clone` launch `vim pairtools.vba` followed by `:so %` and
    `:quit`.
 3. Download the vimball at www.vim.org/scripts/script.php?script_id=3560 and
    follow 2.
@@ -500,14 +503,14 @@ There are a few ways to install the plugin:
 6. Filetype Files Examples								*pairtools-examples*
 
 See the ftplugin/ files included in the github repository:
-	
+
 	https://github.com/MartinLafreniere/vim-PairTools/tree/master/ftplugin
 
 
 ==============================================================================
 7. Few Thoughts											*pairtools-thoughts*
 
-- Using the repeat command '.' with |auto-close| doesn't work as expected by a 
+- Using the repeat command '.' with |auto-close| doesn't work as expected by a
   user. The closing character will not appear even though the user type the
   ending character to step out of the pair.
 
