@@ -12,7 +12,7 @@ let g:pairtools_python_jigsaw    = 1
 
 " Configure PairClamp
 let g:pairtools_python_autoclose  = 1
-let g:pairtools_python_forcepairs = 0
+let g:pairtools_python_forcepairs = 1
 let g:pairtools_python_closepairs = "(:),[:],{:},':',\":\""
 let g:pairtools_python_smartclose = 1
 let g:pairtools_python_smartcloserules = '\w,(,&,\*'
