@@ -3,17 +3,17 @@
 " Maintainer:   Martin Lafreniere <pairtools@gmail.com>
 "
 " Copyright (C) 2011 by Martin Lafrenière
-" 
+"
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to deal
 " in the Software without restriction, including without limitation the rights
 " to use, copy, todify, merge, publish, distribute, sublicense, and/or sell
 " copies of the Software, and permit persons to whom the Software is furnished
 " to do so, subject to the following conditions:
-" 
+"
 " The above copyright notice and this permission notice shall be included in all
 " copies or substantial portions of the Software.
-" 
+"
 " THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 " IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 " FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NOT EVENT SHALL THE
@@ -45,7 +45,7 @@ function! tagwrench#StopContext(...)
     let cursor = col('.') - 1
 
     if exists('b:TWContext') && b:TWContext
-        
+
         " Make sure the > wasn't pressed inside an attribute field
         if s:IsAttributeContext() && value == '>'
             return value
@@ -66,7 +66,7 @@ function! tagwrench#StopContext(...)
     endif
     let b:TWContext  = 0
     let b:TWTagEvent = 0
-    
+
     return value
 
 endfunction
@@ -103,8 +103,8 @@ function! tagwrench#StopContextIf(Direction, Value)
     let position = (a:Direction == 'L' ? cursor - 1 : cursor)
 
     " Stop only when getting out of < ... >
-    if exists('b:TWContext') && b:TWContext 
-        
+    if exists('b:TWContext') && b:TWContext
+
         if !s:IsAttributeContext() && line[position] == a:Value
             if exists('b:TWContextBegin')
                 unlet b:TWContextBegin
@@ -194,7 +194,7 @@ function! tagwrench#IsTagEvent()
     endif
 
     return b:TWTagEvent
-        
+
 endfunction
 
 " }}}1
@@ -210,24 +210,24 @@ function! tagwrench#Erase()
     if line[(column - 1):(column)] == '<>'
         return s:RemoveDelimiters(1)
     endif
-    
+
     " Case <%|%> and <?|?>
     if line[(column - 2):(column + 1)] =~ '<[%?][%?]>'
         return s:RemoveDelimiters(2)
     endif
 
     " Next is <tag>|</tag>
-    if line[(column - 1):(column)] == '><' 
+    if line[(column - 1):(column)] == '><'
         if s:RemoveMatchedTags()
             return 1
         endif
     endif
-    
+
     " Finally, it can be <tag>|, <tag/>|, <!tag>|, <!tag/>, </tag>
     if line[column - 1] == '>'
         return s:RemoveVoidTag()
     endif
-    
+
     return 0
 
 endfunction
@@ -248,14 +248,14 @@ function! s:RemoveMatchedTags()
     let result = 0
     let line   = getline('.')
     let column = col('.') - 1
-     
+
     if line[column + 1] != '/'
         return result
     endif
 
     " Get closing tag name (remove starting </)
     let closingName = matchstr(line[(column + 2):], '^[[:alnum:]_:-]\+')
-    
+
     let closingLength = strlen(closingName)
 
     let end = column + closingLength + 2
@@ -263,7 +263,7 @@ function! s:RemoveMatchedTags()
     " Reverse look for <tagname because muliples tag with the same
     " name on one line is possible
     let start = column - 1
-    
+
     let skip = 0
     while (skip || line[start] != '<') && start > -1
         if line[start] =~ '["'']' && line[start - 1] != '\'
@@ -310,7 +310,7 @@ function! s:RemoveVoidTag()
     return result
 
 endfunction
-    
+
 
 function! s:RemoveRange(Current, Begin, End)
 
@@ -331,9 +331,9 @@ function! tagwrench#Expand()
 
     let line   = getline('.')
     let column = col('.') - 1
-    
+
     " Cases <%|%> and <?|?> / <tag>|</tag>
-    if (line[(column - 2):(column + 1)] =~ '<[%?][%?]>') || 
+    if (line[(column - 2):(column + 1)] =~ '<[%?][%?]>') ||
                 \(line[(column - 1):(column)] == '><')
         return s:ExpandCR()
     endif
@@ -375,7 +375,7 @@ function! s:TagHook(ContextBegin, ContextEnd)
     if index(g:PTTagWrenchHookTable, b:PTTagWrenchHook) > -1
         exe 'call ' . b:PTTagWrenchHook . '(' .a:ContextBegin . ',' . a:ContextEnd . ')'
     endif
-     
+
 endfunction
 
 
@@ -408,10 +408,10 @@ endfunction
 function! tagwrench#BuiltinBasicTagHook(ContextBegin, ContextEnd, ...)
 
     let line = getline('.')
-    
+
     let startTag = line[(a:ContextBegin):(a:ContextEnd-1)]
     let tagName  = matchstr(startTag, '^<\zs!\?[[:alnum:]_:-]\+')
-    
+
     let voids = (a:0 > 0 ? a:000[0] : '')
     if index(split(voids, ','), tolower(tagName)) == -1 && startTag !~ '/>$' && startTag !~ '^<[!/]'
 
@@ -445,7 +445,7 @@ function! s:SurroundClosingTag(OpeningEnd)
     endif
 
     let offset = 0
-    
+
     " Get input and find motion delimiter
     let tagCmd  = input('')
     let delimit = match(tagCmd, '\a')
@@ -457,20 +457,20 @@ function! s:SurroundClosingTag(OpeningEnd)
     if motion == '$'
 
         let offset = strlen(line[(a:OpeningEnd):])
-   
+
     elseif motion ==# 'l'
 
         let offset = index
-  
+
     elseif motion ==# 'w'
-        
+
         while index > 0
             let offset += matchend(line[(a:OpeningEnd + offset):], '\%(\w\+\|$\)')
             let index -= 1
         endwhile
- 
+
     elseif motion ==# 'W'
-            
+
         while index > 0
             let offset += matchend(line[(a:OpeningEnd + offset):], '\%(\S\+\|$\)')
             let index -=1
@@ -481,9 +481,9 @@ function! s:SurroundClosingTag(OpeningEnd)
         let tagName = input('Tag Name: ')
 
         let offset = matchend(line[(a:OpeningEnd):], '</'.tagName.'>')
-        
+
         "Couldn't find ending tag, look for void
-        if offset == -1 
+        if offset == -1
             let offset = matchend(line[(a:OpeningEnd):], '<'.tagName.'[^>]*>')
         endif
 
@@ -493,9 +493,9 @@ function! s:SurroundClosingTag(OpeningEnd)
 
         let offset = -1 * a:OpeningEnd
 
-    else 
+    else
         let offset = 0
-    endif 
+    endif
 
     return a:OpeningEnd + offset
 

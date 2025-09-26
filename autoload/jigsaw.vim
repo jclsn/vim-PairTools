@@ -3,17 +3,17 @@
 " Maintainer:   Martin Lafreniere <pairtools@gmail.com>
 "
 " Copyright (C) 2011 by Martin Lafrenière
-" 
+"
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to deal
 " in the Software without restriction, including without limitation the rights
 " to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 " copies of the Software, and permit persons to whom the Software is furnished
 " to do so, subject to the following conditions:
-" 
+"
 " The above copyright notice and this permission notice shall be included in all
 " copies or substantial portions of the Software.
-" 
+"
 " THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 " IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 " FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NOT EVENT SHALL THE
@@ -21,7 +21,7 @@
 " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 " SOFTWARE.
- 
+
 " Backspace Hook API {{{1
 
 function! jigsaw#Backspace()
@@ -30,14 +30,14 @@ function! jigsaw#Backspace()
     let column = col('.') - 1
 
     " Try each registered hook until one is actually executed
-    for [hook, value] in items(b:PTBackspaceHookTable)        
-        
+    for [hook, value] in items(b:PTBackspaceHookTable)
+
         exe 'let result = ' . hook . '()'
-        if result 
+        if result
             return value
         endif
 
-    endfor 
+    endfor
 
     return "\<BS>"
 
@@ -72,14 +72,14 @@ function! jigsaw#CarriageReturn()
     let column = col('.') - 1
 
     " Try each registered hook until one is actually executed
-    for [hook, value] in items(b:PTCarriageReturnHookTable)        
-        
+    for [hook, value] in items(b:PTCarriageReturnHookTable)
+
         exe 'let result = ' . hook . '()'
-        if result 
+        if result
             return value
         endif
 
-    endfor 
+    endfor
 
     return "\<CR>"
 
